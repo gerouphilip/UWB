@@ -59,6 +59,7 @@ class Person:
 
     def choose_action(self):
         i = 1
+        print("\n" + bcolors.BOLD + self.name + bcolors.ENDC)
         print(bcolors.OKBLUE + bcolors.BOLD + "Choose an Action:" + bcolors.ENDC)
         for item in self.actions:
             print("    " + str(i) + ": " + item)
@@ -80,5 +81,61 @@ class Person:
         i = 1
         print(bcolors.OKGREEN + bcolors.BOLD + "Choose an Item:" + bcolors.ENDC)
         for item in self.items:
-            print("    " + str(i) + "." + item.name, ": ",  item.description, " (x5)")
+            print("    " + str(i) + "." + item["item"].name, ": ",  item["item"].description, " (x" + str(item["quantity"]) + ")")
             i += 1
+
+    def get_stats(self):
+        hp_bar = ""
+        bar_ticks = (self.hp / self.maxhp) * 100 / 4
+        while bar_ticks > 0:
+            hp_bar += "█"
+            bar_ticks -= 1
+
+        while len(hp_bar) < 25:
+            hp_bar += " "
+
+        mp_bar = ""
+        bar_ticks = (self.mp / self.maxmp) * 100 / 10
+
+        while bar_ticks > 0:
+            mp_bar += "█"
+            bar_ticks -= 1
+
+        while len(mp_bar) < 10:
+            mp_bar += " "
+
+
+        hp_string = str(self.hp) + "/" + str(self.maxhp)
+        current_hp = ""
+
+        if len(hp_string) < 9:
+            decrease = 9 - len(hp_string)
+
+            while decrease > 0:
+                current_hp += " "
+                decrease -= 1
+
+            current_hp += hp_string
+
+        else:
+            current_hp = hp_string
+
+        mp_string = str(self.mp) + "/" + str(self.maxmp)
+        current_mp = ""
+
+        if len(mp_string) < 7:
+            decrease = 7 - len(mp_string)
+
+            while decrease > 0:
+                current_mp += " "
+                decrease -= 1
+
+            current_mp += mp_string
+
+        else:
+            current_mp = mp_string
+
+
+        print("                         _________________________             __________")
+        print(bcolors.BOLD + self.name + ":      " +  current_hp + "  |" + bcolors.OKGREEN + hp_bar + bcolors.ENDC + "|  "  +
+              bcolors.BOLD + current_mp +  "  |" + bcolors.OKBLUE + mp_bar + bcolors.ENDC +"|")
