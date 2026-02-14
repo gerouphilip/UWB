@@ -84,6 +84,17 @@ class Person:
             print("    " + str(i) + "." + item["item"].name, ": ",  item["item"].description, " (x" + str(item["quantity"]) + ")")
             i += 1
 
+    def choose_target(self, enemies):
+        i = 1
+        print("\n" + bcolors.BOLD + bcolors.FAIL + "Choose a Target:" + bcolors.ENDC)
+        for enemy in enemies:
+            if enemy.get_hp() != 0:
+                print("    " + str(i) + "." + enemy.name + bcolors.ENDC)
+                i += 1
+        choice = int(input("Choose target:")) - 1
+        return choice
+
+
     def get_stats(self):
         hp_bar = ""
         bar_ticks = (self.hp / self.maxhp) * 100 / 4
@@ -139,3 +150,46 @@ class Person:
         print("                         _________________________             __________")
         print(bcolors.BOLD + self.name + ":      " +  current_hp + "  |" + bcolors.OKGREEN + hp_bar + bcolors.ENDC + "|  "  +
               bcolors.BOLD + current_mp +  "  |" + bcolors.OKBLUE + mp_bar + bcolors.ENDC +"|")
+
+    def get_enemy_stats(self):
+        hp_bar = ""
+        bar_ticks = (self.hp / self.maxhp) * 100 / 2
+        while bar_ticks > 0:
+            hp_bar += "█"
+            bar_ticks -= 1
+
+        while len(hp_bar) < 50:
+            hp_bar += " "
+
+        hp_string = str(self.hp) + "/" + str(self.maxhp)
+        current_hp = ""
+
+        if len(hp_string) < 11:
+            decrease = 11 - len(hp_string)
+
+            while decrease > 0:
+                current_hp += " "
+                decrease -= 1
+
+            current_hp += hp_string
+
+        else:
+            current_hp = hp_string
+
+        print("                             __________________________________________________")
+        print(
+            bcolors.BOLD + self.name + ":    " + current_hp + "  |" + bcolors.FAIL + hp_bar + bcolors.ENDC + "|  ")
+
+
+    def choose_enemy_spell(self):
+        magic_choice = random.randrange(0, len(self.magic))
+        spell = self.magic[magic_choice]
+        magic_dmg = spell.generate_damage()
+
+        pct = self.hp / self.maxhp * 100
+
+        #if self.mp < spell.cost | spell.type == "white" and pct > 50:
+        if self.mp < spell.cost or (spell.type == "white" and pct > 50):
+            self.choose_enemy_spell()
+        else:
+            return spell, magic_dmg
