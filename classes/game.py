@@ -12,15 +12,42 @@ class bcolors:
      UNDERLINE = '\033[4m'
 
 
+#class Person:
+#    def __init__(self, name, hp, mp, atk, df, magic, items):
+#        self.maxhp = hp
+#        self.hp = hp
+#        self.maxmp = mp
+#        self.mp = mp
+#        self.atkl = atk - 10
+#        self.atkh = atk + 10
+#        self.df = df
+#        self.magic = magic
+#        self.actions = ["Attack", "Magic", "Items"]
+#        self.items = items
+#        self.name = name
+
 class Person:
     def __init__(self, name, hp, mp, atk, df, magic, items):
+        # Base stats (permanent growth values)
+        self.base_hp = hp
+        self.base_mp = mp
+        self.base_atk = atk
+        self.base_df = df
+
+        # Level system
+        self.level = 1
+        self.xp = 0
+
+        # Current scaled stats
         self.maxhp = hp
         self.hp = hp
         self.maxmp = mp
         self.mp = mp
+
         self.atkl = atk - 10
         self.atkh = atk + 10
         self.df = df
+
         self.magic = magic
         self.actions = ["Attack", "Magic", "Items"]
         self.items = items
@@ -85,14 +112,24 @@ class Person:
             i += 1
 
     def choose_target(self, enemies):
-        i = 1
+        alive_enemies = []
+
         print("\n" + bcolors.BOLD + bcolors.FAIL + "Choose a Target:" + bcolors.ENDC)
-        for enemy in enemies:
-            if enemy.get_hp() != 0:
-                print("    " + str(i) + "." + enemy.name + bcolors.ENDC)
-                i += 1
-        choice = int(input("Choose target:")) - 1
-        return choice
+
+        for index, enemy in enumerate(enemies):
+            if enemy.get_hp() > 0:
+                print("    " + str(len(alive_enemies) + 1) + "." + enemy.name)
+                alive_enemies.append(index)
+
+        if not alive_enemies:
+            return None
+
+        choice = int(input("Choose target: ")) - 1
+
+        if choice < 0 or choice >= len(alive_enemies):
+            return None
+
+        return alive_enemies[choice]
 
 
     def get_stats(self):
@@ -181,19 +218,6 @@ class Person:
             bcolors.BOLD + self.name + ":    " + current_hp + "  |" + bcolors.FAIL + hp_bar + bcolors.ENDC + "|  ")
 
 
-#    def choose_enemy_spell(self):
-#        magic_choice = random.randrange(0, len(self.magic))
-#        spell = self.magic[magic_choice]
-#        magic_dmg = spell.generate_damage()
-#
-#        pct = self.hp / self.maxhp * 100
-#
-#        #if self.mp < spell.cost | spell.type == "white" and pct > 50:
-#        if self.mp < spell.cost or (spell.type == "white" and pct > 50):
-#            self.choose_enemy_spell()
-#        else:
-#            return spell, magic_dmg
-
     def choose_enemy_spell(self):
         available_spells = []
 
@@ -236,27 +260,19 @@ class Person:
         self.base_atk += 40
         self.base_df += 10
 
-        self.maxhp = self.base_hp
-        self.maxmp = self.base_mp
-        self.atk = self.base_atk
-        self.df = self.base_df
-
-        self.hp = self.maxhp
-        self.mp = self.maxmp
+        self.scale_with_level()
 
     def scale_with_level(self):
         multiplier = 1 + (self.level * 0.2)
 
         self.maxhp = int(self.base_hp * multiplier)
         self.maxmp = int(self.base_mp * multiplier)
-        self.atk = int(self.base_atk * multiplier)
+
+        scaled_atk = int(self.base_atk * multiplier)
+        self.atkl = scaled_atk - 10
+        self.atkh = scaled_atk + 10
+
         self.df = int(self.base_df * multiplier)
 
         self.hp = self.maxhp
         self.mp = self.maxmp
-
-    When
-    creating
-    enemies:
-    enemy1.level = 3
-    enemy1.scale_with_level()

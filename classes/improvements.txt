@@ -9,3 +9,8 @@ This is to track ideas for improvements that I have
 8. Read and Write from JSON
     8b. implement XP system, stat increases, and more difficult enemies or random enemies
 9. Different item lists and quantities for different players, so if that player dies their items are gone
+
+
+10. If you enter in no input (just hit enter) it crashes things out
+11. spells still cast even when you don't have enough MP
+12 clean up input were an incorrect number entered continues instead of crashing out

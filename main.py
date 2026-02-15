@@ -13,8 +13,8 @@ with open("classes/data.json", "r") as f:
 fire = Spell("Heater", 10, 700, "black")
 thunder = Spell("Blanket", 18, 1100, "black")
 blizzard = Spell("Fresh Air", 30, 1600, "black")
-meteor = Spell("Help", 45, 2400, "black")
-quake = Spell("In the Zone", 75, 3200, "black")
+meteor = Spell("Help", 85, 2400, "black")
+quake = Spell("In the Zone", 175, 3200, "black")
 
 
 # Create White Magic and balance spells
@@ -187,7 +187,7 @@ while running:
 
             if enemies[enemy].get_hp() == 0:
                 print(enemies[enemy].name.replace(" ", "") + " has been defeated.")
-                del enemies[enemy]
+               # del enemies[enemy]
 
         elif index == 1:
             player.choose_magic()
@@ -220,7 +220,8 @@ while running:
 
                 if enemies[enemy].get_hp() == 0:
                     print(enemies[enemy].name.replace(" ", "") + " has been defeated.")
-                    del enemies[enemy]
+                  #  del enemies[enemy]
+
 
 
         elif index == 2:
@@ -264,9 +265,13 @@ while running:
                 if enemies[enemy].get_hp() == 0:
                     print(enemies[enemy].name.replace(" ", "") + " has been defeated.")
                     for player in players:
-                        player.xp += enemies[enemy].xp_reward  # Award XP to all players
-                        level_up(player)    # Check and level up players if needed
-                    del enemies[enemy]
+                        player.gain_xp(enemies[enemy].xp_reward)
+
+                        #player.xp += enemies[enemy].xp_reward  # Award XP to all players
+                        #player.level_up()    # Check and level up players if needed
+                #    del enemies[enemy]
+                    if enemies[target].get_hp() == 0:
+                        print(enemies[target].name.replace(" ", "") + " has been defeated.")
 
     #check if battle is over
     defeated_enemies = 0
@@ -275,13 +280,18 @@ while running:
     for enemy in enemies:
         if enemy.get_hp() == 0:
             defeated_enemies += 1
+        if enemy.get_hp() == 0 and not hasattr(enemy, "xp_given"):
+            print(enemy.name.replace(" ", "") + " has been defeated.")
+            for player in players:
+                player.gain_xp(enemy.xp_reward)
+            enemy.xp_given = True  # Prevent giving XP multiple times
 
 
     for player in players:
         if player.get_hp() == 0:
             defeated_players += 1
     #Check if player won
-    if defeated_enemies == 2:
+    if all(enemy.get_hp() == 0 for enemy in enemies):
         print(bcolors.OKGREEN + "You Win!" + bcolors.ENDC)
         running = False
     #Check if enemy won
@@ -291,23 +301,32 @@ while running:
 
 
     #Enemy Stat increase
-    enemy2.atkl += 10  # increase by 1 every turn
-    enemy2.atkh += 10  # increase by 1 every turn
+    enemy2.atkl += 10  # increase by 10 every turn
+    enemy2.atkh += 10  # increase by 10 every turn
     enemy2.df += 5
     #Enemy attack phase
     for enemy in enemies:
         enemy_choice = random.randrange(0, 2)
 
+        if len(players) == 0:
+            print("\n")
+            print(bcolors.FAIL + bcolors.BOLD + "You Lose!" + bcolors.ENDC)
+            running = False
+            break
+
         if enemy_choice == 0:
             # Chose attack
-            target = random.randrange(0, 4)
+            target = random.randrange(0, len(players))
+
             enemy_dmg = enemies[0].generate_damage()
             players[target].take_damage(enemy_dmg - players[target].df)
             print(enemy.name.replace(" ","") + " attacks " + players[target].name.replace(" ", "") + " for ", enemy_dmg)
 
             if players[target].get_hp() == 0:
                 print(players[target].name.replace(" ", "") + " has fallen asleep.")
-                del players[player]
+                #del players[player]
+                if players[target].get_hp() == 0:
+                    print(players[target].name.replace(" ", "") + " has fallen asleep.")
 
         if enemy_choice == 1:
             spell, magic_dmg = enemy.choose_enemy_spell()
@@ -323,16 +342,21 @@ while running:
                     enemy.hp = enemy.maxhp
                 print(bcolors.OKBLUE + "\n" + spell.name + " heals " + enemy.name.replace(" ", "") + " for", str(magic_dmg), "HP" + bcolors.ENDC)
             elif spell.type == "black":
-                target = random.randrange(0, 4)
+                target = random.randrange(0, len(players))
+
 
                 players[target].take_damage(magic_dmg)
                 print(bcolors.OKBLUE + "\n" + enemy.name.replace(" ", "") + "'s" + spell.name + " deals", str(magic_dmg), " points of damage to " + players[target].name.replace(" ", "") + bcolors.ENDC)
 
                 if players[target].get_hp() == 0:
                     print(players[target].name.replace(" ", "") + " has fallen asleep.")
-                    del players[target]
+                    #del players[target]
+                    if players[target].get_hp() == 0:
+                        print(players[target].name.replace(" ", "") + " has fallen asleep.")
 
             #print("Enemy chose", spell, "damage is", magic_dmg)
 
+    players = [p for p in players if p.get_hp() > 0]
+    enemies = [e for e in enemies if e.get_hp() > 0]
 
 

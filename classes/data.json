@@ -3,32 +3,32 @@
     "Philip": {
       "level": 1,
       "xp": 0,
-      "base_hp": 6500,
-      "base_mp": 450,
+      "base_hp": 6567,
+      "base_mp": 453,
       "base_atk": 320,
       "base_df": 40
     },
     "Mike": {
       "level": 1,
       "xp": 0,
-      "base_hp": 6000,
-      "base_mp": 350,
+      "base_hp": 6109,
+      "base_mp": 358,
       "base_atk": 290,
       "base_df": 45
     },
     "Solon": {
       "level": 1,
       "xp": 0,
-      "base_hp": 6200,
-      "base_mp": 300,
+      "base_hp": 6286,
+      "base_mp": 324,
       "base_atk": 360,
       "base_df": 35
     },
     "QB": {
       "level": 1,
       "xp": 0,
-      "base_hp": 5800,
-      "base_mp": 300,
+      "base_hp": 5879,
+      "base_mp": 302,
       "base_atk": 260,
       "base_df": 70
     }
@@ -37,27 +37,27 @@
   "enemies": {
     "The Game": {
       "level": 1,
-      "base_hp": 18000,
-      "base_mp": 400,
+      "base_hp": 18321,
+      "base_mp": 429,
       "base_atk": 360,
       "base_df": 60,
-      "xp_reward": 500
+      "xp_reward": 1500
     },
     "Sleep Dep.": {
       "level": 1,
-      "base_hp": 14000,
-      "base_mp": 350,
+      "base_hp": 14927,
+      "base_mp": 357,
       "base_atk": 300,
       "base_df": 50,
-      "xp_reward": 350
+      "xp_reward": 1350
     },
      "Chat": {
       "level": 1,
-      "base_hp": 12000,
-      "base_mp": 450,
+      "base_hp": 12508,
+      "base_mp": 454,
       "base_atk": 270,
       "base_df": 75,
-      "xp_reward": 350
+      "xp_reward": 1350
     }
   }
 }
