@@ -181,15 +181,37 @@ class Person:
             bcolors.BOLD + self.name + ":    " + current_hp + "  |" + bcolors.FAIL + hp_bar + bcolors.ENDC + "|  ")
 
 
+#    def choose_enemy_spell(self):
+#        magic_choice = random.randrange(0, len(self.magic))
+#        spell = self.magic[magic_choice]
+#        magic_dmg = spell.generate_damage()
+#
+#        pct = self.hp / self.maxhp * 100
+#
+#        #if self.mp < spell.cost | spell.type == "white" and pct > 50:
+#        if self.mp < spell.cost or (spell.type == "white" and pct > 50):
+#            self.choose_enemy_spell()
+#        else:
+#            return spell, magic_dmg
+
     def choose_enemy_spell(self):
-        magic_choice = random.randrange(0, len(self.magic))
-        spell = self.magic[magic_choice]
-        magic_dmg = spell.generate_damage()
+        available_spells = []
 
         pct = self.hp / self.maxhp * 100
 
-        #if self.mp < spell.cost | spell.type == "white" and pct > 50:
-        if self.mp < spell.cost or (spell.type == "white" and pct > 50):
-            self.choose_enemy_spell()
-        else:
-            return spell, magic_dmg
+        for spell in self.magic:
+            if self.mp < spell.cost:
+                continue
+
+            if spell.type == "white" and pct > 50:
+                continue
+
+            available_spells.append(spell)
+
+        if len(available_spells) == 0:
+            return None, None
+
+        spell = random.choice(available_spells)
+        magic_dmg = spell.generate_damage()
+
+        return spell, magic_dmg
