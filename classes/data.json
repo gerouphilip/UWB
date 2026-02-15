@@ -41,7 +41,7 @@
       "base_mp": 429,
       "base_atk": 360,
       "base_df": 60,
-      "xp_reward": 1500
+      "xp_reward": 500
     },
     "Sleep Dep.": {
       "level": 1,
@@ -49,7 +49,7 @@
       "base_mp": 357,
       "base_atk": 300,
       "base_df": 50,
-      "xp_reward": 1350
+      "xp_reward": 350
     },
      "Chat": {
       "level": 1,
@@ -57,7 +57,7 @@
       "base_mp": 454,
       "base_atk": 270,
       "base_df": 75,
-      "xp_reward": 1350
+      "xp_reward": 350
     }
   }
 }
