@@ -3,28 +3,35 @@ import random
 from classes.game import Person, bcolors
 from classes.magic import*
 from classes.inventory import Item
+import json
+with open("classes/data.json", "r") as f:
+    data = json.load(f)
 
 
 
 # Create Black Magic and balance spells
-fire = Spell("Heater", 7, 500, "black")
-thunder = Spell("Blanket", 10, 800, "black")
-blizzard = Spell("Fresh Air", 18, 1800, "black")
-meteor = Spell("Help", 50, 3400, "black")
-quake = Spell("In the Zone", 125, 5000, "black")
+fire = Spell("Heater", 10, 700, "black")
+thunder = Spell("Blanket", 18, 1100, "black")
+blizzard = Spell("Fresh Air", 30, 1600, "black")
+meteor = Spell("Help", 45, 2400, "black")
+quake = Spell("In the Zone", 75, 3200, "black")
+
 
 # Create White Magic and balance spells
-cure = Spell("Move to the back couch", 10, 750, "white")
-cura = Spell("Nap", 18, 2000, "white")
-curaga = Spell("Restore", 36, 7000, "white")
+cure = Spell("Move to the back couch", 12, 800, "white")
+cura = Spell("Nap", 25, 1600, "white")
+curaga = Spell("Restore", 50, 4800, "white")
 
 # Create some Items
-potion = Item("Coffee", "potion", "Heals 350 HP", 350)
-hipotion = Item("Monster", "potion", "Heals 1000 HP", 1000)
+potion = Item("Coffee", "potion", "Heals 600 HP", 600)
+hipotion = Item("Monster", "potion", "Heals 1200 HP", 1200)
 superpotion = Item("NOS", "potion", "Heals 2000 HP", 2000)
+
 elixer = Item("Chips", "elixer", "Fully restore HP/MP of 1 party member", 9999)
 hielixer = Item("VeggieTray", "elixer", "Fully restore HP/MP of all party members", 9999)
-grenade = Item("Walkthrough", "attack", "Deals 3500 damage", 3500)
+
+grenade = Item("Walkthrough", "attack", "Deals 2200 damage", 2200)
+
 
 player_spells = [fire, thunder, blizzard, meteor, quake, cure, cura]
 enemy_spells = [fire, thunder, blizzard, meteor, curaga]
@@ -34,14 +41,100 @@ player_items = [{"item": potion, "quantity": 5}, {"item": hipotion, "quantity": 
                 {"item": hielixer, "quantity": 2}, {"item": grenade, "quantity": 5}]
 
 # Instantiate People
-player1 = Person("Philip", 7460, 465, 325, 34, player_spells, player_items)
-player2 = Person("Mike  ", 6460, 365, 285, 44, player_spells, player_items)
-player3 = Person("Solon ", 7460, 265, 415, 24, player_spells, player_items)
-player4 = Person("QB    ", 6960, 165, 275, 64, player_spells, player_items)
+# player1 = Person("Philip", 6500, 450, 320, 40, player_spells, player_items)
+philip_data = data["players"]["Philip"]
 
-enemy1 = Person("The Game  ", 19200, 650, 400, 85, enemy_spells, [])
-enemy2 = Person("Sleep Dep.", 11200, 650, 340, 75, enemy_spells, [])
-enemy3 = Person("Chat      ", 13200, 650, 240, 54, enemy_spells, [])
+player1 = Person(
+    "Philip",
+    philip_data["base_hp"],
+    philip_data["base_mp"],
+    philip_data["base_atk"],
+    philip_data["base_df"],
+    player_spells,
+    player_items
+)
+
+player1.level = philip_data["level"]
+player1.xp = philip_data["xp"]
+
+#player2 = Person("Mike  ", 6000, 350, 290, 45, player_spells, player_items)
+mike_data = data["players"]["Mike"]
+player2 = Person(
+    "Mike  ",
+    mike_data["base_hp"],
+    mike_data["base_mp"],
+    mike_data["base_atk"],
+    mike_data["base_df"],
+    player_spells,
+    player_items
+)
+
+player2.level = mike_data["level"]
+player2.xp = mike_data["xp"]
+
+#player3 = Person("Solon ", 6200, 300, 360, 35, player_spells, player_items)
+solon_data = data["players"]["Solon"]
+player3 = Person(
+    "Solon ",
+    solon_data["base_hp"],
+    solon_data["base_mp"],
+    solon_data["base_atk"],
+    solon_data["base_df"],
+    player_spells,
+    player_items
+)
+
+player3.level = solon_data["level"]
+player3.xp = solon_data["xp"]
+
+#player4 = Person("QB    ", 5800, 300, 260, 70, player_spells, player_items)
+QB_data = data["players"]["QB"]
+player4 = Person(
+    "QB    ",
+    QB_data["base_hp"],
+    QB_data["base_mp"],
+    QB_data["base_atk"],
+    QB_data["base_df"],
+    player_spells,
+    player_items
+)
+
+player4.level = QB_data["level"]
+player4.xp = QB_data["xp"]
+
+#enemy1 = Person("The Game  ", 18000, 400, 360, 60, enemy_spells, [])
+TheGame_data = data["enemies"]["The Game"]
+enemy1 = Person(
+    "The Game  ",
+    TheGame_data["base_hp"],
+    TheGame_data["base_mp"],
+    TheGame_data["base_atk"],
+    TheGame_data["base_df"],
+    enemy_spells,
+    []
+)
+#enemy2 = Person("Sleep Dep.", 14000, 350, 300, 50, enemy_spells, [])
+SleepDep_data = data["enemies"]["Sleep Dep."]
+enemy2 = Person(
+        "Sleep Dep.",
+    SleepDep_data["base_hp"],
+    SleepDep_data["base_mp"],
+    SleepDep_data["base_atk"],
+    SleepDep_data["base_df"],
+    enemy_spells,
+    []
+)
+#enemy3 = Person("Chat      ", 12000, 450, 270, 75, enemy_spells, [])
+Chat_data = data["enemies"]["Chat"]
+enemy3 = Person(
+    "Chat      ",
+    Chat_data["base_hp"],
+    Chat_data["base_mp"],
+    Chat_data["base_atk"],
+    Chat_data["base_df"],
+    enemy_spells,
+    []
+)
 
 players = [player1, player2, player3, player4]
 

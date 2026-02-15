@@ -1,0 +1,70 @@
+PART 4 — Add XP + Level System to Person Class
+Inside Person.__init__() add:
+self.level = 1
+self.xp = 0
+self.base_hp = hp
+self.base_mp = mp
+self.base_atk = atk
+self.base_df = df
+Add XP Gain Function
+def gain_xp(self, amount):
+    print(self.name + " gained", amount, "XP!")
+    self.xp += amount
+
+    xp_to_level = self.level * 1000
+
+    if self.xp >= xp_to_level:
+        self.level_up()
+Add Level Up Function
+def level_up(self):
+    self.level += 1
+    self.xp = 0
+
+    print(self.name + " leveled up to Level", self.level, "!")
+
+    self.base_hp += 500
+    self.base_mp += 50
+    self.base_atk += 40
+    self.base_df += 10
+
+    self.maxhp = self.base_hp
+    self.maxmp = self.base_mp
+    self.atk = self.base_atk
+    self.df = self.base_df
+
+    self.hp = self.maxhp
+    self.mp = self.maxmp
+Now leveling increases stats permanently.
+✅ PART 5 — Give XP When Enemy Dies
+When an enemy dies:
+xp_reward = 500  # or pull from JSON
+
+for player in players:
+    if player.get_hp() > 0:
+        player.gain_xp(xp_reward)
+Better version (pull from JSON):
+enemy_data = data["enemies"][enemy.name.strip()]
+xp_reward = enemy_data["xp_reward"]
+✅ PART 6 — Enemy Scaling by Level
+Add this inside Person:
+def scale_with_level(self):
+    multiplier = 1 + (self.level * 0.2)
+
+    self.maxhp = int(self.base_hp * multiplier)
+    self.maxmp = int(self.base_mp * multiplier)
+    self.atk = int(self.base_atk * multiplier)
+    self.df = int(self.base_df * multiplier)
+
+    self.hp = self.maxhp
+    self.mp = self.maxmp
+When creating enemies:
+enemy1.level = 3
+enemy1.scale_with_level()
+Now enemies scale dynamically.
+🔥 OPTIONAL — Persistent Save System
+After battle ends:
+data["players"]["Philip"]["level"] = player1.level
+data["players"]["Philip"]["xp"] = player1.xp
+
+with open("data.json", "w") as f:
+    json.dump(data, f, indent=4)
