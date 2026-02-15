@@ -113,6 +113,11 @@ enemy1 = Person(
     enemy_spells,
     []
 )
+enemy1.level = TheGame_data["level"]
+enemy1.xp_reward = TheGame_data["xp_reward"]
+
+# Scale enemy stats based on level
+enemy1.scale_with_level()
 #enemy2 = Person("Sleep Dep.", 14000, 350, 300, 50, enemy_spells, [])
 SleepDep_data = data["enemies"]["Sleep Dep."]
 enemy2 = Person(
@@ -124,6 +129,11 @@ enemy2 = Person(
     enemy_spells,
     []
 )
+enemy2.level = SleepDep_data["level"]
+enemy2.xp_reward = SleepDep_data["xp_reward"]
+
+# Scale enemy stats based on level
+enemy2.scale_with_level()
 #enemy3 = Person("Chat      ", 12000, 450, 270, 75, enemy_spells, [])
 Chat_data = data["enemies"]["Chat"]
 enemy3 = Person(
@@ -135,6 +145,11 @@ enemy3 = Person(
     enemy_spells,
     []
 )
+enemy3.xp_reward = Chat_data["xp_reward"]
+enemy3.level = Chat_data["level"]
+
+# Scale enemy stats based on level
+enemy3.scale_with_level()
 
 players = [player1, player2, player3, player4]
 
@@ -248,6 +263,9 @@ while running:
 
                 if enemies[enemy].get_hp() == 0:
                     print(enemies[enemy].name.replace(" ", "") + " has been defeated.")
+                    for player in players:
+                        player.xp += enemies[enemy].xp_reward  # Award XP to all players
+                        level_up(player)    # Check and level up players if needed
                     del enemies[enemy]
 
     #check if battle is over
@@ -257,6 +275,7 @@ while running:
     for enemy in enemies:
         if enemy.get_hp() == 0:
             defeated_enemies += 1
+
 
     for player in players:
         if player.get_hp() == 0:

@@ -215,3 +215,48 @@ class Person:
         magic_dmg = spell.generate_damage()
 
         return spell, magic_dmg
+
+    def gain_xp(self, amount):
+        print(self.name + " gained", amount, "XP!")
+        self.xp += amount
+
+        xp_to_level = self.level * 1000
+
+        if self.xp >= xp_to_level:
+            self.level_up()
+
+    def level_up(self):
+        self.level += 1
+        self.xp = 0
+
+        print(self.name + " leveled up to Level", self.level, "!")
+
+        self.base_hp += 500
+        self.base_mp += 50
+        self.base_atk += 40
+        self.base_df += 10
+
+        self.maxhp = self.base_hp
+        self.maxmp = self.base_mp
+        self.atk = self.base_atk
+        self.df = self.base_df
+
+        self.hp = self.maxhp
+        self.mp = self.maxmp
+
+    def scale_with_level(self):
+        multiplier = 1 + (self.level * 0.2)
+
+        self.maxhp = int(self.base_hp * multiplier)
+        self.maxmp = int(self.base_mp * multiplier)
+        self.atk = int(self.base_atk * multiplier)
+        self.df = int(self.base_df * multiplier)
+
+        self.hp = self.maxhp
+        self.mp = self.maxmp
+
+    When
+    creating
+    enemies:
+    enemy1.level = 3
+    enemy1.scale_with_level()
