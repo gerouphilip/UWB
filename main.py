@@ -129,8 +129,8 @@ while running:
                 Continue
 
             player.items[item_choice]["quantity"] -= 1
-
-
+            if player.items[item_choice]["quantity"]== 0:
+                del player.items[item_choice]
 
             if item.type == "potion":
                 player.heal(item.prop)
@@ -179,9 +179,9 @@ while running:
 
 
     #Enemy Stat increase
-    enemy2.atkl += 1  # increase by 1 every turn
-    enemy2.atkh += 1  # increase by 1 every turn
-    enemy2.df += 1
+    enemy2.atkl += 10  # increase by 1 every turn
+    enemy2.atkh += 10  # increase by 1 every turn
+    enemy2.df += 5
     #Enemy attack phase
     for enemy in enemies:
         enemy_choice = random.randrange(0, 2)

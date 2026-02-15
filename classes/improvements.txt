@@ -1,10 +1,9 @@
 This is to track ideas for improvements that I have
 
-1. Remove items from item list when the quantity reaches 0 - This is similiar to how enemies and players are removed when they die
-2. Implement defense working - have damage done subtract defense
-3. Update spell and item names for better theming
-4. Balance out stats
-5. Have Sleep Dep. become more powerful over time
+
+
+4. Balance out stats - I tweaked them, but can probably improve how balanced the stats are
+
 6. Implement targeting for healing spells
 7. Implement targeting for healing items (potions and elixers)
 8. Read and Write from JSON
