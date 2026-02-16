@@ -14,3 +14,5 @@ This is to track ideas for improvements that I have
 10. If you enter in no input (just hit enter) it crashes things out
 11. spells still cast even when you don't have enough MP
 12 clean up input were an incorrect number entered continues instead of crashing out
+
+13. Fix it saying a character has fallen asleep twice when they die

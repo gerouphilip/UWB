@@ -56,6 +56,8 @@ player1 = Person(
 
 player1.level = philip_data["level"]
 player1.xp = philip_data["xp"]
+player1.wins = philip_data.get("wins", 0)
+player1.losses = philip_data.get("losses", 0)
 
 #player2 = Person("Mike  ", 6000, 350, 290, 45, player_spells, player_items)
 mike_data = data["players"]["Mike"]
@@ -71,6 +73,8 @@ player2 = Person(
 
 player2.level = mike_data["level"]
 player2.xp = mike_data["xp"]
+player2.wins = mike_data.get("wins", 0)
+player2.losses = mike_data.get("losses", 0)
 
 #player3 = Person("Solon ", 6200, 300, 360, 35, player_spells, player_items)
 solon_data = data["players"]["Solon"]
@@ -86,6 +90,8 @@ player3 = Person(
 
 player3.level = solon_data["level"]
 player3.xp = solon_data["xp"]
+player3.wins = solon_data.get("wins", 0)
+player3.losses = solon_data.get("losses", 0)
 
 #player4 = Person("QB    ", 5800, 300, 260, 70, player_spells, player_items)
 QB_data = data["players"]["QB"]
@@ -101,6 +107,8 @@ player4 = Person(
 
 player4.level = QB_data["level"]
 player4.xp = QB_data["xp"]
+player4.wins = QB_data.get("wins", 0)
+player4.losses = QB_data.get("losses", 0)
 
 #enemy1 = Person("The Game  ", 18000, 400, 360, 60, enemy_spells, [])
 TheGame_data = data["enemies"]["The Game"]
@@ -160,11 +168,38 @@ i = 0
 
 print(bcolors.FAIL + bcolors.BOLD + "A NEW GAME IS CHALLENGED!" + bcolors.ENDC)
 
+
+def save_game(players, filename="classes/data.json"):
+    with open(filename, "r") as f:
+        data = json.load(f)
+
+    for player in players:
+        data["players"][player.name.strip()] = {
+            "level": player.level,
+            "xp": player.xp,
+            "base_hp": player.base_hp,
+            "base_mp": player.base_mp,
+            "base_atk": player.base_atk,
+            "base_df": player.base_df,
+            "wins": getattr(player, "wins", 0),
+            "losses": getattr(player, "losses", 0)
+        }
+
+    with open(filename, "w") as f:
+        json.dump(data, f, indent=4)
+
+
+# Call this after the battle
+save_game(players)
+
+
 while running:
     print("===================================================")
     print("\n")
 
     for player in players:
+        if player.get_hp() == 0:
+            continue
         player.get_stats()
 
     print("\n")
@@ -173,6 +208,8 @@ while running:
         enemy.get_enemy_stats()
 
     for player in players:
+        if player.get_hp() == 0:
+            continue
 
         player.choose_action()
         choice = input("Choose an action: ")
@@ -293,10 +330,16 @@ while running:
     #Check if player won
     if all(enemy.get_hp() == 0 for enemy in enemies):
         print(bcolors.OKGREEN + "You Win!" + bcolors.ENDC)
+        for player in players:
+            player.wins += 1
+            save_game(players)
         running = False
     #Check if enemy won
     elif defeated_players == 3:
         print(bcolors.FAIL + "You Lose!" + bcolors.ENDC)
+        for player in players:
+            player.losses += 1
+            save_game(players)
         running = False
 
 
@@ -356,7 +399,7 @@ while running:
 
             #print("Enemy chose", spell, "damage is", magic_dmg)
 
-    players = [p for p in players if p.get_hp() > 0]
+    #players = [p for p in players if p.get_hp() > 0]
     enemies = [e for e in enemies if e.get_hp() > 0]
 
 

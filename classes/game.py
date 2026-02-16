@@ -187,6 +187,8 @@ class Person:
         print("                         _________________________             __________")
         print(bcolors.BOLD + self.name + ":      " +  current_hp + "  |" + bcolors.OKGREEN + hp_bar + bcolors.ENDC + "|  "  +
               bcolors.BOLD + current_mp +  "  |" + bcolors.OKBLUE + mp_bar + bcolors.ENDC +"|")
+        print(
+            f"Level: {self.level} | XP: {self.xp} | Wins: {getattr(self, 'wins', 0)} | Losses: {getattr(self, 'losses', 0)}")
 
     def get_enemy_stats(self):
         hp_bar = ""
@@ -216,6 +218,8 @@ class Person:
         print("                             __________________________________________________")
         print(
             bcolors.BOLD + self.name + ":    " + current_hp + "  |" + bcolors.FAIL + hp_bar + bcolors.ENDC + "|  ")
+        #print(
+        #    f"Level: {self.level} | XP: {self.xp} | Wins: {getattr(self, 'wins', 0)} | Losses: {getattr(self, 'losses', 0)}")
 
 
     def choose_enemy_spell(self):
